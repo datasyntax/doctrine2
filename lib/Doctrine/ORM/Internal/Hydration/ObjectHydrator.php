@@ -158,7 +158,12 @@ class ObjectHydrator extends AbstractHydrator
     {
         $result = [];
 
-        while ($row = $this->_stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Buffer all rows first: with PDO dblib (MSSQL/FreeTDS) a nested query run during
+        // hydration (e.g. a lazy load) discards the pending result set of this statement.
+        // See doctrine/orm#6009.
+        $rows = $this->_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as $row) {
             $this->hydrateRowData($row, $result);
         }
 
