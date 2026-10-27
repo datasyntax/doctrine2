@@ -309,7 +309,7 @@ class Parser
      */
     public function match($token)
     {
-        $lookaheadType = $this->lexer->lookahead['type'];
+        $lookaheadType = $this->lexer->lookahead !== null ? $this->lexer->lookahead['type'] : null;
 
         // short-circuit on first condition, usually types match
         if ($lookaheadType !== $token && $token !== Lexer::T_IDENTIFIER && $lookaheadType <= Lexer::T_IDENTIFIER) {
@@ -3167,7 +3167,7 @@ class Parser
 
         $escapeChar = null;
 
-        if ($this->lexer->lookahead['type'] === Lexer::T_ESCAPE) {
+        if ($this->lexer->isNextToken(Lexer::T_ESCAPE)) {
             $this->match(Lexer::T_ESCAPE);
             $this->match(Lexer::T_STRING);
 
