@@ -287,11 +287,10 @@ class DatabaseDriver implements MappingDriver
                 $allForeignKeyColumns = array_merge($allForeignKeyColumns, $foreignKey->getLocalColumns());
             }
 
+            // Tables without a primary key cannot be mapped: skip them instead of
+            // aborting the whole reverse-engineering run.
             if ( ! $table->hasPrimaryKey()) {
-                throw new MappingException(
-                    "Table " . $table->getName() . " has no primary key. Doctrine does not ".
-                    "support reverse engineering from tables that don't have a primary key."
-                );
+                continue;
             }
 
             $pkColumns = $table->getPrimaryKey()->getColumns();
