@@ -629,6 +629,10 @@ class BasicEntityPersister implements EntityPersister
                 continue;
             }
 
+            if ($this->class->hasField($field) && $this->class->isReadOnly($field)) {
+                continue;
+            }
+
             $newVal = $change[1];
 
             if ( ! isset($this->class->associationMappings[$field])) {
@@ -1441,6 +1445,10 @@ class BasicEntityPersister implements EntityPersister
             }
 
             if (isset($this->class->embeddedClasses[$name])) {
+                continue;
+            }
+
+            if ($this->class->hasField($name) && $this->class->isReadOnly($name)) {
                 continue;
             }
 

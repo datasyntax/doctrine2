@@ -543,6 +543,10 @@ class JoinedSubclassPersister extends AbstractEntityInheritancePersister
                 continue;
             }
 
+            if ($this->class->hasField($name) && $this->class->isReadOnly($name)) {
+                continue;
+            }
+
             if (isset($this->class->associationMappings[$name])) {
                 $assoc = $this->class->associationMappings[$name];
                 if ($assoc['type'] & ClassMetadata::TO_ONE && $assoc['isOwningSide']) {

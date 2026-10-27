@@ -384,6 +384,10 @@ class ClassMetadataInfo implements ClassMetadata
      * - <b>nullable</b> (boolean, optional)
      * Whether the column is nullable. Defaults to FALSE.
      *
+     * - <b>readOnly</b> (boolean, optional)
+     * Whether the column is read-only: hydrated, but never written by INSERT
+     * or UPDATE. Defaults to FALSE.
+     *
      * - <b>columnDefinition</b> (string, optional, schema-only)
      * The SQL fragment that is used when generating the DDL for the column.
      *
@@ -1213,6 +1217,20 @@ class ClassMetadataInfo implements ClassMetadata
         $mapping = $this->getFieldMapping($fieldName);
 
         return false !== $mapping && isset($mapping['nullable']) && $mapping['nullable'];
+    }
+
+    /**
+     * Checks if the field is read-only (never written by INSERT or UPDATE).
+     *
+     * @param string $fieldName The field name.
+     *
+     * @return boolean TRUE if the field is read-only, FALSE otherwise.
+     */
+    public function isReadOnly($fieldName)
+    {
+        $mapping = $this->getFieldMapping($fieldName);
+
+        return false !== $mapping && isset($mapping['readOnly']) && $mapping['readOnly'];
     }
 
     /**

@@ -225,6 +225,10 @@ class XmlExporter extends AbstractExporter
                 if (isset($field['nullable'])) {
                     $fieldXml->addAttribute('nullable', $field['nullable'] ? 'true' : 'false');
                 }
+
+                if (isset($field['readOnly'])) {
+                    $fieldXml->addAttribute('readOnly', $field['readOnly'] ? 'true' : 'false');
+                }
             }
         }
 

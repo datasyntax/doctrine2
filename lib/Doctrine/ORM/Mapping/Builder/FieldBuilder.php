@@ -98,6 +98,20 @@ class FieldBuilder
     }
 
     /**
+     * Sets readOnly.
+     *
+     * @param bool $flag
+     *
+     * @return static
+     */
+    public function readOnly($flag = true)
+    {
+        $this->mapping['readOnly'] = (bool) $flag;
+
+        return $this;
+    }
+
+    /**
      * Sets Unique.
      *
      * @param bool $flag
