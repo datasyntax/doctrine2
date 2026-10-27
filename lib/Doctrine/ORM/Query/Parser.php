@@ -528,7 +528,7 @@ class Parser
      */
     private function isMathOperator($token)
     {
-        return in_array($token['type'], array(Lexer::T_PLUS, Lexer::T_MINUS, Lexer::T_DIVIDE, Lexer::T_MULTIPLY));
+        return $token !== null && in_array($token['type'], array(Lexer::T_PLUS, Lexer::T_MINUS, Lexer::T_DIVIDE, Lexer::T_MULTIPLY));
     }
 
     /**
@@ -543,7 +543,7 @@ class Parser
 
         $this->lexer->resetPeek();
 
-        return ($lookaheadType >= Lexer::T_IDENTIFIER && $peek['type'] === Lexer::T_OPEN_PARENTHESIS);
+        return ($lookaheadType >= Lexer::T_IDENTIFIER && $peek !== null && $peek['type'] === Lexer::T_OPEN_PARENTHESIS);
     }
 
     /**
@@ -1437,7 +1437,7 @@ class Parser
         // We need to check if we are in a IdentificationVariable or SingleValuedPathExpression
         $glimpse = $this->lexer->glimpse();
 
-        if ($glimpse['type'] === Lexer::T_DOT) {
+        if ($glimpse !== null && $glimpse['type'] === Lexer::T_DOT) {
             return $this->SingleValuedPathExpression();
         }
 
@@ -1481,7 +1481,7 @@ class Parser
                 $expr = $this->SimpleArithmeticExpression();
                 break;
 
-            case ($glimpse['type'] === Lexer::T_DOT):
+            case ($glimpse !== null && $glimpse['type'] === Lexer::T_DOT):
                 $expr = $this->SingleValuedPathExpression();
                 break;
 
@@ -2806,11 +2806,11 @@ class Parser
             case Lexer::T_IDENTIFIER:
                 $peek = $this->lexer->glimpse();
 
-                if ($peek['value'] == '(') {
+                if ($peek !== null && $peek['value'] == '(') {
                     return $this->FunctionDeclaration();
                 }
 
-                if ($peek['value'] == '.') {
+                if ($peek !== null && $peek['value'] == '.') {
                     return $this->SingleValuedPathExpression();
                 }
 
@@ -2826,7 +2826,7 @@ class Parser
             default:
                 $peek = $this->lexer->glimpse();
 
-                if ($peek['value'] == '(') {
+                if ($peek !== null && $peek['value'] == '(') {
                     if ($this->isAggregateFunction($this->lexer->lookahead['type'])) {
                         return $this->AggregateExpression();
                     }
@@ -2924,7 +2924,7 @@ class Parser
     {
         $glimpse = $this->lexer->glimpse();
 
-        if ($this->lexer->isNextToken(Lexer::T_IDENTIFIER) && $glimpse['value'] === '.') {
+        if ($this->lexer->isNextToken(Lexer::T_IDENTIFIER) && $glimpse !== null && $glimpse['value'] === '.') {
             return $this->SingleValuedAssociationPathExpression();
         }
 
@@ -3214,7 +3214,7 @@ class Parser
                 // We need to check if we are in a IdentificationVariable or SingleValuedPathExpression
                 $glimpse = $this->lexer->glimpse();
 
-                if ($glimpse['type'] === Lexer::T_DOT) {
+                if ($glimpse !== null && $glimpse['type'] === Lexer::T_DOT) {
                     $expr = $this->SingleValuedPathExpression();
 
                     // Leave switch statement
